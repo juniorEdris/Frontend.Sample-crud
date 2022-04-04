@@ -1,36 +1,87 @@
+import { useState } from "react";
+
 const DataTable = () => {
+
+    const data = [
+        {
+            id: '#rwid147',
+            name: 'Microwave',
+            cat_id: '#rwid147',
+            cat_name: 'Kitchen',
+            price: '$0.99',
+            status: 'On sale',
+            available_from: '02-04-22',
+        },
+        {
+            id: '#rwid149',
+            name: 'Rice cooker',
+            cat_id: '#rwid149',
+            cat_name: 'Kitchen',
+            price: '$0.75',
+            status: 'On sale',
+            available_from: '02-03-22',
+        }
+    ];
+
+    const [checkedAll, setCheckedAll] = useState(false);
+    const [checkedProducts, setCheckedProducts] = useState([]);
+
+    const handleCheckALL = () => {
+        setCheckedAll(!checkedAll);
+        if(!checkedAll){
+            const allProductsId = data.map(({id}) => id);
+            setCheckedProducts(allProductsId);
+        }else{
+            setCheckedProducts([]);
+        }
+    };
+    
+    const handleCheckSingleProduct = (id) => {
+        if(checkedAll){
+            setCheckedProducts([id]);
+            setCheckedAll(false);
+        }else{
+            if(checkedProducts.includes(id)){
+                const restOfIDs = checkedProducts.filter((product)=> product.id === id);
+                setCheckedProducts(restOfIDs);
+            }else{
+                setCheckedProducts([...checkedProducts, id]);
+            }
+        }
+    };
+
     const deleteItems = () => {
-        console.log({ msg: 'delete'});
+        console.log({checkedAll, checkedProducts});
     }
     return ( 
         <>
             <div className="container mt-5 px-2">
-            <div class="mb-2 d-flex justify-content-between align-items-center">
-                <div class="px-2"> <span role="button" tabIndex="0" onClick={deleteItems} className="text-red-600 underline">Delete</span></div>
+            <div class="mb-2 d-flex justify-content-end align-items-center">
+                <div class="px-2"> <span role="button" tabIndex="0" onClick={deleteItems} className="table-delete-btn text-red-600 underline hover:opacity-80">Delete</span></div>
             </div>
                 <div className="table-responsive">
                     <table className="table table-responsive table-borderless">
                     <thead>
                         <tr className="bg-light">
-                        <th scope="col" width="5%"><input className="form-check-input" type="checkbox" /></th>
-                        <th scope="col" width="5%">#</th>
-                        <th scope="col" width="20%">Date</th>
-                        <th scope="col" width="10%">Status</th>
-                        <th scope="col" width="20%">Customer</th>
-                        <th scope="col" width="20%">Purchased</th>
-                        <th scope="col" className="text-end" width="20%"><span>Revenue</span></th>
+                        <th scope="col"><span role="button" tabIndex="0" onClick={()=> handleCheckALL()} className={`${checkedAll ? 'active' : '' } cursor-pointer product-checkbox`}/></th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Category ID</th>
+                        <th scope="col">Category name</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" className="text-end"><span>Available from</span></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                        <th scope="row"><input className="form-check-input" type="checkbox" /></th>
-                        <td>12</td>
-                        <td>1 Oct, 21</td>
-                        <td><i className="fa fa-check-circle-o green" /><span className="ms-1">Paid</span></td>
-                        <td><img src="https://i.imgur.com/VKOeFyS.png" width={25} alt=''/> Althan Travis</td>
-                        <td>Wirecard for figma</td>
-                        <td className="text-end"><span className="fw-bolder">$0.99</span> <i className="fa fa-ellipsis-h ms-2" /></td>
-                        </tr>
+                        {data.map(({id, name, cat_id, cat_name, price, status, available_from}) => (<tr>
+                            <th key={id} scope="row"><span role="button" tabIndex="0" onClick={()=> handleCheckSingleProduct(id)} className={`${checkedProducts.includes(id) ? 'active' : '' } cursor-pointer product-checkbox`}/></th>
+                            <td>{name}</td>
+                            <td>{cat_id}</td>
+                            <td><span className="ms-1">{cat_name}</span></td>
+                            <td>{price}</td>
+                            <td>{status}</td>
+                            <td className="text-end"><span className="fw-bolder"></span>{available_from}</td>
+                        </tr>))}
                     </tbody>
                     </table>
                 </div>
