@@ -15,3 +15,9 @@ html {
 body{
     background-color: #eee !important;
 }
+
+/* Custom Css */
+
+.login-nav-active {
+    color: rgb(168 162 158);
+}

@@ -30,7 +30,7 @@ const Navbar = () => {
     ];
 
     const handleClick = () => {
-        console.log({ msg: 'clicked nav'});
+        localStorage.removeItem('user');
     };
 
     return ( 

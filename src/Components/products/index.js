@@ -1,7 +1,9 @@
+import DataTable from "./data-table";
+
 const Products = () => {
     return ( 
         <div className="product-page">
-            <h1 className="text-3xl font-bold underline">Products page</h1>
+            <DataTable/>
         </div>
      );
 }
