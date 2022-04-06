@@ -4,7 +4,7 @@ import Home from './Components/home';
 import Login from './Components/login';
 import Navbar from './Components/navbar';
 import Products from './Components/products';
-import UpdateProducts from './Components/update-products';
+import HandleProducts from './Components/handle-products';
 import './globals.css';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
               <Route path='/' element={<Home/>} />
               <Route path='login' element={<Login/>} />
               <Route path='products' element={<Products/>} />
-              <Route path=':productid' element={<UpdateProducts/>} />
+              <Route path='products/:productid' element={<HandleProducts/>} />
             </Routes>
         </Container>
       </div>
