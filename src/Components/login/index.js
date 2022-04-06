@@ -7,7 +7,7 @@ const Login = () => {
     const [view, setView] = useState('login');
     return ( 
         <Container>
-            <div className="login-page py-3 w-2/3 mx-auto">
+            <div className="login-page py-3 w-1/2 mx-auto">
                 <div className="view-nav mb-2">
                     <span className={`${view === 'login' && 'login-nav-active'} mr-2 cursor-pointer`} onClick={()=> setView('login')} >Login</span> <span className="mr-2">/</span> <span className={`${view === 'signup' && 'login-nav-active'} mr-2 cursor-pointer`} onClick={()=> setView('signup')}>Create new account</span>
                 </div>
