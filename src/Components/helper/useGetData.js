@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getUser } from "../../utils";
 
 const UseGetData = (url) => {
     const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const UseGetData = (url) => {
             });
     
         };
-        getData();
+        if(getUser()) getData();
     },[url]);
 
     const refetch = async () => {

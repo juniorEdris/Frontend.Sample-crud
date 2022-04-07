@@ -4,10 +4,11 @@ import Home from './Components/home';
 import Login from './Components/login';
 import Navbar from './Components/navbar';
 import Products from './Components/products';
-import HandleProducts from './Components/handle-products';
+import ProductDetails from './Components/products/details';
 import './globals.css';
 
 function App() {
+
   return (
     <BrowserRouter>
       <div className="App text-slate-700">
@@ -17,7 +18,7 @@ function App() {
               <Route path='/' element={<Home/>} />
               <Route path='login' element={<Login/>} />
               <Route path='products' element={<Products/>} />
-              <Route path='products/:productid' element={<HandleProducts/>} />
+              <Route path='products/:productid' element={<ProductDetails/>} />
             </Routes>
         </Container>
       </div>

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "../container";
 import { statusData } from "../helper/uiData";
 
-const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
+const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) => {
     const { data:allcategories =[] } = categories;
     
     const [error, setError] = useState('');
@@ -45,6 +45,19 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
             })
         }
     };
+
+    useEffect(() => {
+        if(details){
+            console.log({ddd: details});
+            setProductInfo({
+                productName:details?.name,
+                productPrice:details?.price,
+                availableFrom:details?.available_since,
+                productStatus:details?.status,
+                productCategory:details?.category_id
+            });
+        };
+    }, [details]);
     return (
         <Container>
             <div className="py-4 w-full">
@@ -95,4 +108,4 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
      );
 }
  
-export default HandleProducts;
+export default UpdateForm;

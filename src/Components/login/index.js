@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "../../utils";
 import Container from "../container";
 import CreateAccount from "./createAccount";
 import Signin from "./signin";
 
 const Login = () => {
     const [view, setView] = useState('login');
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(getUser()){
+            navigate('/');
+        }
+    }, [navigate]);
+    
     return ( 
         <Container>
             <div className="login-page py-3 w-1/2 mx-auto">

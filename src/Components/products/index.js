@@ -1,9 +1,20 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "../../utils";
 import HandleProducts from "../handle-products";
 import UseGetData from "../helper/useGetData";
 import UseMutateData from "../helper/useMutateData";
 import DataTable from "./data-table";
 
 const Products = () => {
+
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(!getUser()){
+            navigate('/login');
+        }
+    }, [navigate]);
+    
 
     const [data, refetch] = UseGetData('api/get-category');
     const [mutateData] = UseMutateData();
@@ -18,7 +29,8 @@ const Products = () => {
                     price 
                 };
             mutateData(`api/add-product`, mutationData);
-            setTimeout(()=> refetch(),2000)
+            setTimeout(()=> refetch(),2000);
+            window.location.reload();
         }catch(e){
             console.log(e);
         }

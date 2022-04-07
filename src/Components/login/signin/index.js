@@ -1,5 +1,7 @@
-import { useState } from "react";
+import Axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUser } from "../../../utils";
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -15,15 +17,39 @@ const Signin = () => {
         setPassword(e.target.value);
     };
 
+    useEffect(()=>{
+        if(getUser()) navigate('/');
+    }, [navigate])
+
     const handleSubmit = (e) =>{
+        e.preventDefault();
+        setError('');
         if (email && password) {
             localStorage.setItem('user', true);
-            // if (password.toLocaleLowerCase() === confirmPassword.toLocaleLowerCase()) {
-            // }else{
-            //     // error
-            //     setError('Credentials did not matched!');
-            // }
-            navigate('/');
+            if(email.includes('@') || email.includes('.com')){
+                if (password.toLocaleLowerCase().length > 6) {
+                    Axios.post(`http://localhost:5000/api/login`,{ email, password})
+                    .then(response=>{
+                        const { data } = response;
+                        if(!data.status){
+                            setError(data.message);
+                        }else{
+                            localStorage.setItem('accessToken', data.data.accessToken);
+                            getUser('loggedin');
+                            navigate('/');
+                            window.location.reload();
+                        }
+                    })
+                    .catch(err=>{
+                        if (err) {
+                            setError('Invalid credentials');
+                        }
+                    });
+                }else{
+                    // error
+                    setError('Password should be above 6 characters!');
+                }
+            }
         }else{
             //  error
             setError('Please provide your credentials!');
@@ -32,7 +58,7 @@ const Signin = () => {
     return ( 
         <div className="sign-in-section w-full">
             <h4 className="pl-9 py-2 text-xl">Log in</h4>
-            <form className="p-9">
+            <form className="p-9" onSubmit={handleSubmit}>
                 <div className="form flex flex-wrap flex-col">
                     <div className="email mb-3">
                         <div>
@@ -50,14 +76,16 @@ const Signin = () => {
                         </div>
                         <input className=" py-lg-2 outline-none focus:ring focus:border-blue-500 border-none rounded p-1 w-full md:w-3/4" type="password" id="password" onChange={handlePassword} value={password} />
                     </div>
+                    
+                    <div className="mb-3">
+                        <span className="text-base text-rose-500">{error && error}</span>
+                    </div>
+                    
                     <div className="">
-                        <button onClick={handleSubmit} className="border w-full md:w-1/2 border-slate-900 bg-primary rounded py-lg-2 text-base text-light" type="button">Sign in</button>
+                        <button className="border w-full md:w-1/2 border-slate-900 bg-primary rounded py-lg-2 text-base text-light" type="submit">Sign in</button>
                     </div>
                 </div>
             </form>
-            <div className="">
-                <span className="text-base text-rose-500">{error && error}</span>
-            </div>
         </div>
      );
 }
