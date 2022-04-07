@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUser } from "../../../utils";
+import { toast } from "react-toastify";
+import { getUser, LoadingComponent } from "../../../utils";
 import UseGetData from "../../helper/useGetData";
 import UpdateProducts from "../../update-form";
 
@@ -11,7 +12,7 @@ const ProductDetails = () => {
     const [data] = UseGetData('api/get-category');
     
     const [details, setDetails] = useState({});
-    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     useEffect(()=>{
         if(!getUser()){
@@ -20,13 +21,17 @@ const ProductDetails = () => {
     }, [navigate]);
 
     useEffect(()=>{
+        setLoading(true);
         axios.get(`http://localhost:5000/api/get-single-product/${productid}`)
         .then(response => {
             const { data } = response?.data;
             if(!data.status){
-                setError('Could not find the product!');
+                toast.error('Could not find the product!');
+                setLoading(false);
+            }else{
+                setLoading(false);
+                setDetails(data);
             }
-            setDetails(data);
         })
         .catch(error=>{
             console.log(error);
@@ -34,26 +39,21 @@ const ProductDetails = () => {
     }, [productid]);
 
     const handleSubmit = async (data) => {
-        console.log({data});
         try{
             const response = await axios.post(`http://localhost:5000/api/update-single-product/${productid}`, data);
-            console.log({response})
+            const { data: res } = response;
+            if (res) {
+                toast.success(res.message);
+            }
         }catch(err){
             console.error(err);
         }
     }
     return ( 
         <div className="container mt-5 px-2">
-            <h1>Details { productid }</h1>
-            <div className="mb-3">
-                <span className="text-3xl">{error && error}</span>
-                {details.name}
-            </div>
-            <UpdateProducts
-                details={details} 
-                handleSubmit={handleSubmit}
-                categories={data}
-            />
+            {
+                loading ? LoadingComponent() : <UpdateProducts details={details} handleSubmit={handleSubmit} categories={data} />
+            }
         </div>
      );
 }

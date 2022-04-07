@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 
 const UseMutateData = () => {
-    // const [data, setData] = useState({});
     const [response, setResponse] = useState({});
     const domain = 'http://localhost:5000/';
     const mutateData = async (url, data) => {

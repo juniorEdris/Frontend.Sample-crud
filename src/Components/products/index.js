@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getUser } from "../../utils";
 import HandleProducts from "../handle-products";
 import UseGetData from "../helper/useGetData";
@@ -16,7 +17,7 @@ const Products = () => {
     }, [navigate]);
     
 
-    const [data, refetch] = UseGetData('api/get-category');
+    const [data] = UseGetData('api/get-category');
     const [mutateData] = UseMutateData();
     const addProduct = (data) => {
         try{
@@ -29,8 +30,8 @@ const Products = () => {
                     price 
                 };
             mutateData(`api/add-product`, mutationData);
-            setTimeout(()=> refetch(),2000);
             window.location.reload();
+            toast.success('Product added successfully!');
         }catch(e){
             console.log(e);
         }

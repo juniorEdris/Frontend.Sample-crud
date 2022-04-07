@@ -31,7 +31,6 @@ const CreateAccount = () => {
                 if (email.includes('.com')) {
                     if(password.toLocaleLowerCase().length > 6){
                         if (password.toLocaleLowerCase() === confirmPassword.toLocaleLowerCase()) {
-                            console.log({ email, password, yes: email.includes('.com') });
                             Axios.post(`http://localhost:5000/api/register`,{ email, password})
                                 .then(response=>{
                                     const { data } = response;

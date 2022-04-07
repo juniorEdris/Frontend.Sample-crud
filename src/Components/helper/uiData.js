@@ -1,10 +1,10 @@
 export const statusData = [
     {
         name: 'Active',
-        value: true,
+        value: 'active',
     },
     {
-        name: 'Deactive',
-        value: false,
+        name: 'Inactive',
+        value: 'inactive',
     }
 ]

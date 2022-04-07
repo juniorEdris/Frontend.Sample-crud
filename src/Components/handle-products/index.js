@@ -16,17 +16,10 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
     const formFilled = productInfo.productName && productInfo.productPrice && productInfo.availableFrom && productInfo.productStatus && productInfo.productCategory
 
     const handleChange = (e) => {
-        if(e.target.id !== 'productStatus'){
-            setProductInfo({
-                ...productInfo,
-                [e.target.id]: e.target.value
-            })
-        }else{
-            setProductInfo({
-                ...productInfo,
-                [e.target.id]: e.target.value === 'true' ? true : false
-            })
-        }
+        setProductInfo({
+            ...productInfo,
+            [e.target.id]: e.target.value
+        });
     };
 
     const submitData = (e) => {

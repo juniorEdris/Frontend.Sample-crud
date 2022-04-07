@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Container from './Components/container';
 import Home from './Components/home';
 import Login from './Components/login';
@@ -20,6 +22,17 @@ function App() {
               <Route path='products' element={<Products/>} />
               <Route path='products/:productid' element={<ProductDetails/>} />
             </Routes>
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </Container>
       </div>
     </BrowserRouter>

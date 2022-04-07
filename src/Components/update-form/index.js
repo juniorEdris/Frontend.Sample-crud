@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Container from "../container";
 import { statusData } from "../helper/uiData";
+import moment from "moment";
+import { size } from "lodash";
 
 const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) => {
     const { data:allcategories =[] } = categories;
-    
-    const [error, setError] = useState('');
+
     const [productInfo, setProductInfo] = useState({
         productName: '',
         productPrice: '',
@@ -13,28 +15,19 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
         productStatus: '',
         productCategory:''
     });
-    const formFilled = productInfo.productName && productInfo.productPrice && productInfo.availableFrom && productInfo.productStatus && productInfo.productCategory
+    const formFilled = productInfo.productName && productInfo.productPrice && size(productInfo.productStatus) && productInfo.productCategory
 
     const handleChange = (e) => {
-        if(e.target.id !== 'productStatus'){
-            setProductInfo({
-                ...productInfo,
-                [e.target.id]: e.target.value
-            })
-        }else{
-            setProductInfo({
-                ...productInfo,
-                [e.target.id]: e.target.value === 'true' ? true : false
-            })
-        }
+        setProductInfo({
+            ...productInfo,
+            [e.target.id]: e.target.value
+        });
     };
 
     const submitData = (e) => {
         e.preventDefault();
-        
-        setError('');
         if(!formFilled){
-            setError('Fill the required inputs.');
+            toast.error('Fill the required inputs.');
         }else{
             handleSubmit({
                 name: productInfo.productName,
@@ -48,16 +41,16 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
 
     useEffect(() => {
         if(details){
-            console.log({ddd: details});
             setProductInfo({
                 productName:details?.name,
                 productPrice:details?.price,
-                availableFrom:details?.available_since,
+                availableFrom:moment(details?.available_since).format('L'),
                 productStatus:details?.status,
                 productCategory:details?.category_id
             });
         };
     }, [details]);
+
     return (
         <Container>
             <div className="py-4 w-full">
@@ -65,19 +58,19 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
                 <form className="row g-3" onSubmit={submitData}>
                     <div className="col-md-6">
                         <label htmlFor="productName" className="form-label">Name</label>
-                        <input type="text" className="form-control" id="productName" placeholder="Name" onChange={handleChange} value={productInfo.productName} />
+                        <input type="text" className="form-control" id="productName" placeholder="Name" onChange={handleChange} value={productInfo?.productName} />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="productPrice" className="form-label">Price</label>
-                        <input type="text" className="form-control" id="productPrice" placeholder="Price" onChange={handleChange} value={productInfo.productPrice} />
+                        <input type="text" className="form-control" id="productPrice" placeholder="Price" onChange={handleChange} value={productInfo?.productPrice} />
                     </div>
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                         <label htmlFor="availableFrom" className="form-label">Available from</label>
-                        <input type="date" className="form-control" id="availableFrom" placeholder="Available from" onChange={handleChange} value={productInfo.availableFrom} />
-                    </div>
+                        <input type="date" className="form-control" id="availableFrom" placeholder="Available from" onChange={handleChange} value={moment(productInfo?.availableFrom).format('L')} />
+                    </div> */}
                     <div className="col-md-6">
                         <label htmlFor="productStatus" className="form-label">Status</label>
-                        <select id="productStatus" className="form-select" onChange={handleChange} value={productInfo.productStatus}>
+                        <select id="productStatus" className="form-select" onChange={handleChange} value={productInfo?.productStatus}>
                         <option selected>Choose...</option>
                         {
                             statusData.map(status=>(
@@ -88,7 +81,7 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="productCategory" className="form-label">Category</label>
-                        <select id="productCategory" className="form-select" onChange={handleChange} value={productInfo.productCategory}>
+                        <select id="productCategory" className="form-select" onChange={handleChange} value={productInfo?.productCategory}>
                         <option selected>Choose...</option>
                         {
                             allcategories.map(category=>(
@@ -96,14 +89,13 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
                             ))
                         }
                         </select>
-                            
-                        {error && <span className="text-danger">{error}</span>}
                     </div>
                     <div className="col-12">
                         <button type="submit" className={`border btn bg-blue-600 col-md-4 text-gray-200`}>{btnText ?? 'Update'}</button>
                     </div>
                 </form>
             </div>
+            
         </Container> 
      );
 }
