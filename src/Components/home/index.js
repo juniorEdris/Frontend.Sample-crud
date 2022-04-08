@@ -31,7 +31,7 @@ const Home = () => {
             products?.map((product)=>(
                 <div key={product._id} className="card m-2" style={{width: '18rem'}}>
                     <div className="card-body">
-                        <h5 className="card-title">{product.name}</h5>
+                        <h5 className="card-title capitalize">{product.name}</h5>
                         <p className="card-text mb-1">available since: {moment(product.available_since).format('L')}</p>
                         <p className="card-text mb-1">price: {product.price}</p>
                         <p className="card-text mb-1">category: {categories?.filter(({_id})=> _id === product.category_id)[0]?.name ?? 'none'}</p>
