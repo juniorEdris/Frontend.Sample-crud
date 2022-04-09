@@ -57,7 +57,7 @@ const DataTable = ({categories}) => {
             }
         };
     }
-
+    
     const deletesingleItem = async (id) => {
         setLoading(true);
         try {
@@ -71,6 +71,7 @@ const DataTable = ({categories}) => {
         } catch (error) {
             setLoading(false);
             console.log(error);
+            toast.error('Something went wrong!');
         }
     };
     

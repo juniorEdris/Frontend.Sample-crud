@@ -34,10 +34,24 @@ const Products = () => {
             toast.success('Product added successfully!');
         }catch(e){
             console.log(e);
+            toast.error('Somthing went wrong!');
+        }
+    };
+    const seedData = () => {
+        try{
+            mutateData(`api/seed-demo-product`,{});
+            window.location.reload();
+            toast.success('Product seeded successfully!');
+        }catch(e){
+            console.log(e);
+            toast.error('Somthing went wrong!');
         }
     };
     return ( 
         <div className="product-page">
+            <div className="flex align-items-center justify-content-end container pt-4">
+                <button type="button" className="btn btn-primary btn-sm bg-cyan-600" onClick={seedData}>Seed data</button>
+            </div>
             <HandleProducts
                 title={'Add new product'}
                 btnText={'Add product'}
