@@ -1,13 +1,46 @@
+import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getUser } from "../../utils";
 
 const Navbar = () => {
     const classes = "text-slate-50 mr-2 text-lg capitalize";
 
-    const handleClick = () => {
+    const automaticallyLogout = () => {
+        toast.error('somthing went wrong! Logging out automatically.');
+        localStorage.removeItem('email');
         localStorage.removeItem('accessToken');
         getUser('');
-        window.location.reload();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    };
+
+    const handleClick = () => {
+        const email = localStorage.getItem('email');
+        if(email){
+            axios.post(`http://localhost:5000/api/logout`,{ email })
+            .then(response=>{
+                const { data } = response;
+                if(!data.status){
+                    automaticallyLogout();
+                }else{
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('email');
+                    getUser('');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                }
+            })
+            .catch(err=>{
+                if (err) {
+                    automaticallyLogout();
+                }
+            });
+        }else{
+            automaticallyLogout();
+        }        
     };
 
     return ( 

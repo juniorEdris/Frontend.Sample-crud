@@ -1,12 +1,12 @@
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getUser } from "../../../utils";
 
 const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
     const navigate = useNavigate();
 
@@ -23,18 +23,17 @@ const Signin = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        setError('');
         if (email && password) {
-            localStorage.setItem('user', true);
             if(email.includes('@') || email.includes('.com')){
                 if (password.toLocaleLowerCase().length > 6) {
                     Axios.post(`http://localhost:5000/api/login`,{ email, password})
                     .then(response=>{
                         const { data } = response;
                         if(!data.status){
-                            setError(data.message);
+                            toast.error(data.message);
                         }else{
                             localStorage.setItem('accessToken', data.data.accessToken);
+                            localStorage.setItem('email', data.data.email);
                             getUser('loggedin');
                             navigate('/');
                             window.location.reload();
@@ -42,17 +41,19 @@ const Signin = () => {
                     })
                     .catch(err=>{
                         if (err) {
-                            setError('Invalid credentials');
+                            toast.error('Invalid credentials!');
                         }
                     });
                 }else{
                     // error
-                    setError('Password should be above 6 characters!');
+                    toast.error('Password should be above 6 characters!');
                 }
+            }else{
+                toast.error('Provide credentials including @ and .com');                
             }
         }else{
             //  error
-            setError('Please provide your credentials!');
+            toast.error('Please provide your credentials!');
          };
     };
     return ( 
@@ -75,10 +76,6 @@ const Signin = () => {
                             </label>
                         </div>
                         <input className=" py-lg-2 outline-none focus:ring focus:border-blue-500 border-none rounded p-1 w-full md:w-3/4" type="password" id="password" onChange={handlePassword} value={password} />
-                    </div>
-                    
-                    <div className="mb-3">
-                        <span className="text-base text-rose-500">{error && error}</span>
                     </div>
                     
                     <div className="">

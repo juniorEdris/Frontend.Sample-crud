@@ -39,8 +39,23 @@ const DataTable = ({categories}) => {
         }
     };
 
-    const deleteItems = () => {
-        console.log({checkedAll, checkedProducts});
+    const deleteMultipleItems = async () => {
+        if(!size(checkedProducts)){
+            toast.error('select atleast one product to delete!');
+        }else{
+            try {
+                const {data} = await axios.delete(`http://localhost:5000/api/delete-multiple-products`, {data: {ids: checkedProducts}});
+                if(data){
+                    toast.success(data.message);
+                    setLoading(false);
+                    window.location.reload();
+                }
+            } catch (error) {
+                setLoading(false);
+                toast.error('Something went wrong!');
+                console.log(error);
+            }
+        };
     }
 
     const deletesingleItem = async (id) => {
@@ -50,13 +65,14 @@ const DataTable = ({categories}) => {
             if(data){
                 toast.success(data.message);
                 setLoading(false);
-                allroducts.filter((product)=> product._id !== id)
+                const restProducts =  allroducts.filter((product)=> product._id !== id);
+                setAllproducts(restProducts);
             }
         } catch (error) {
             setLoading(false);
             console.log(error);
         }
-    }
+    };
     
     useEffect(() => {
         const fetchData = async () =>{
@@ -84,9 +100,9 @@ const DataTable = ({categories}) => {
             {!size(allroducts) ? <div className="col-12 flex justify-content-center align-items-center text-3xl text-slate-700">No products</div> 
             :
             <div className="container mt-5 px-2">
-            {/* <div className="mb-2 d-flex justify-content-end align-items-center">
-                <div className="px-2"> <span role="button" tabIndex="0" onClick={deleteItems} className="table-delete-btn text-red-600 underline hover:opacity-80">Delete</span></div>
-            </div> */}
+            <div className="mb-2 d-flex justify-content-end align-items-center">
+                <div className=""> <span role="button" tabIndex="0" onClick={deleteMultipleItems} className="table-delete-btn text-red-600 underline hover:opacity-80">Delete selected</span></div>
+            </div>
                 {loading ? LoadingComponent() :
                 <div className="table-responsive">
                     <table className="table table-responsive table-borderless">

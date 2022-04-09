@@ -1,13 +1,13 @@
 import Axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getUser } from "../../../utils";
 
 const CreateAccount = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
     
     const navigate = useNavigate();
 
@@ -25,7 +25,6 @@ const CreateAccount = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        setError('');
          if (email && password) {
             if(email.includes('@')){
                 if (email.includes('.com')) {
@@ -35,7 +34,7 @@ const CreateAccount = () => {
                                 .then(response=>{
                                     const { data } = response;
                                     if(!data.data.status){
-                                        setError(data.data.message);
+                                        toast.error(data.data.message);
                                     }else{
                                         localStorage.setItem('accessToken', data.data.accessToken);
                                         getUser('loggedin');
@@ -45,28 +44,28 @@ const CreateAccount = () => {
                                 })
                                 .catch(err=>{
                                     if (err) {
-                                        setError('Invalid credentials');
+                                        toast.error('Invalid credentials');
                                     }
                                 });
                         }else{
                             // error
-                            setError('Password did not matched!');
+                            toast.error('Password did not matched!');
                         }
                     }else{
                         // error
-                        setError('Password should be longer than 6!');
+                        toast.error('Password should be longer than 6!');
                     }
                 } else {
                     // error
-                    setError('Invalid credentials!');
+                    toast.error('Invalid credentials!');
                 }
             }else{
                 // error
-                setError('Invalid credentials!');
+                toast.error('Invalid credentials!');
             }
         }else{
         //  error
-        setError('Invalid credentials!');
+        toast.error('Invalid credentials!');
         };
     };
 
@@ -98,9 +97,6 @@ const CreateAccount = () => {
                             </label>
                         </div>
                         <input className="py-lg-2 outline-none focus:ring focus:border-blue-500 border-none rounded p-1 w-full md:w-3/4" type="password" id="con-password" onChange={handleConfirmPassword} value={confirmPassword} />
-                    </div>
-                    <div className="mb-3">
-                        <span className="text-base text-rose-500">{error && error}</span>
                     </div>
                     <div className="">
                         <button className="border w-full md:w-1/2 border-slate-900 bg-primary rounded py-lg-2 text-base text-light" type="submit">Sign up</button>
