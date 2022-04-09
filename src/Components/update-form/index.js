@@ -4,10 +4,12 @@ import Container from "../container";
 import { statusData } from "../helper/uiData";
 import moment from "moment";
 import { size } from "lodash";
+import { btnLoading } from "../../utils";
 
 const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) => {
     const { data:allcategories =[] } = categories;
 
+    const [loading, setLoading] = useState(false);
     const [productInfo, setProductInfo] = useState({
         productName: '',
         productPrice: '',
@@ -25,9 +27,11 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
     };
 
     const submitData = (e) => {
+        setLoading(true);
         e.preventDefault();
         if(!formFilled){
             toast.error('Fill the required inputs.');
+            setLoading(false);
         }else{
             handleSubmit({
                 name: productInfo.productName,
@@ -35,7 +39,10 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
                 available_from: productInfo.availableFrom,
                 status: productInfo.productStatus,
                 category_id: productInfo.productCategory,
-            })
+            });
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
         }
     };
 
@@ -91,7 +98,7 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
                         </select>
                     </div>
                     <div className="col-12">
-                        <button type="submit" className={`border btn bg-blue-600 col-md-4 text-gray-200`}>{btnText ?? 'Update'}</button>
+                        <button type="submit" className={`border btn bg-blue-600 col-md-4 text-gray-200`}>{loading ? btnLoading() : 'Update'}</button>
                     </div>
                 </form>
             </div>

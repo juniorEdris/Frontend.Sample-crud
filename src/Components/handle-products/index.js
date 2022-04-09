@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { btnLoading } from "../../utils";
 import Container from "../container";
 import { statusData } from "../helper/uiData";
 
 const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
     const { data:allcategories =[] } = categories;
     
-    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const [productInfo, setProductInfo] = useState({
         productName: '',
         productPrice: '',
@@ -24,10 +26,10 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
 
     const submitData = (e) => {
         e.preventDefault();
-        
-        setError('');
+        setLoading(true);
         if(!formFilled){
-            setError('Fill the required inputs.');
+            setLoading(false);
+            toast.error('Fill the required inputs!');
         }else{
             handleSubmit({
                 name: productInfo.productName,
@@ -36,6 +38,9 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
                 status: productInfo.productStatus,
                 category_id: productInfo.productCategory,
             })
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
         }
     };
     return (
@@ -76,11 +81,9 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
                             ))
                         }
                         </select>
-                            
-                        {error && <span className="text-danger">{error}</span>}
                     </div>
                     <div className="col-12">
-                        <button type="submit" className={`border btn bg-blue-600 col-md-4 text-gray-200`}>{btnText ?? 'Update'}</button>
+                        <button type="submit" className={`border btn bg-blue-600 col-md-4 text-gray-200`}>{loading ? btnLoading() : btnText}</button>
                     </div>
                 </form>
             </div>
