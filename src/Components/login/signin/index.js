@@ -2,11 +2,12 @@ import Axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getUser } from "../../../utils";
+import { btnLoading, getUser } from "../../../utils";
 
 const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ const Signin = () => {
     }, [navigate])
 
     const handleSubmit = (e) =>{
+        setLoading(true);
         e.preventDefault();
         if (email && password) {
             if(email.includes('@') || email.includes('.com')){
@@ -30,8 +32,10 @@ const Signin = () => {
                     .then(response=>{
                         const { data } = response;
                         if(!data.status){
+                            setLoading(false);
                             toast.error(data.message);
                         }else{
+                            setLoading(false);
                             localStorage.setItem('accessToken', data.data.accessToken);
                             localStorage.setItem('email', data.data.email);
                             getUser('loggedin');
@@ -42,20 +46,25 @@ const Signin = () => {
                     .catch(err=>{
                         if (err) {
                             toast.error('Invalid credentials!');
+                            setLoading(false);
                         }
                     });
                 }else{
                     // error
                     toast.error('Password should be above 6 characters!');
+                    setLoading(false);
                 }
             }else{
                 toast.error('Provide credentials including @ and .com');                
+                setLoading(false);
             }
         }else{
             //  error
             toast.error('Please provide your credentials!');
+            setLoading(false);
          };
     };
+
     return ( 
         <div className="sign-in-section w-full">
             <h4 className="pl-9 py-2 text-xl">Log in</h4>
@@ -79,7 +88,7 @@ const Signin = () => {
                     </div>
                     
                     <div className="">
-                        <button className="border w-full md:w-1/2 border-slate-900 bg-primary rounded py-lg-2 text-base text-light" type="submit">Sign in</button>
+                        <button className="border w-full md:w-1/2 border-slate-900 bg-primary rounded py-lg-2 text-base text-light" type="submit">{loading ? btnLoading() : 'Sign in'}</button>
                     </div>
                 </div>
             </form>

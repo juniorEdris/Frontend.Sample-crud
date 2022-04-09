@@ -10,4 +10,10 @@ export const LoadingComponent = () => {
     return <div className="mt-4 col-12 flex justify-content-center align-items-center ">
             <TailSpin ariaLabel="loading-indicator"  height="100" width="100" color='#007aff' />
         </div>;
-}
+};
+
+export const btnLoading = () => {
+    return <div className="spinner-border text-light" role="status">
+        <span className="sr-only">Loading...</span>
+    </div>;
+};

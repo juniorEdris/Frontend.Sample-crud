@@ -35,6 +35,7 @@ const ProductDetails = () => {
         })
         .catch(error=>{
             console.log(error);
+            toast.error('Could not find the product!');
         });
     }, [productid]);
 
