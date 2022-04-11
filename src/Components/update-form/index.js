@@ -78,7 +78,7 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
                     <div className="col-md-6">
                         <label htmlFor="productStatus" className="form-label">Status</label>
                         <select id="productStatus" className="form-select" onChange={handleChange} value={productInfo?.productStatus}>
-                        <option selected>Choose...</option>
+                        <option selected value=''>Choose...</option>
                         {
                             statusData.map(status=>(
                                 <option key={status.name} value={status.value}>{status.name}</option>
@@ -89,7 +89,7 @@ const UpdateForm = ({ title, btnText, handleSubmit, categories, details = {} }) 
                     <div className="col-md-6">
                         <label htmlFor="productCategory" className="form-label">Category</label>
                         <select id="productCategory" className="form-select" onChange={handleChange} value={productInfo?.productCategory}>
-                        <option selected>Choose...</option>
+                        <option selected value=''>Choose...</option>
                         {
                             allcategories.map(category=>(
                                 <option key={category._id} value={category._id}>{category.name}</option>

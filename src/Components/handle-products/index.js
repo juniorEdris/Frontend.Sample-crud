@@ -74,7 +74,7 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
                     <div className="col-md-6">
                         <label htmlFor="productCategory" className="form-label">Category</label>
                         <select id="productCategory" className="form-select" onChange={handleChange} value={productInfo.productCategory}>
-                        <option selected>Choose...</option>
+                        <option selected value=''>Choose...</option>
                         {
                             allcategories.map(category=>(
                                 <option key={category._id} value={category._id}>{category.name}</option>

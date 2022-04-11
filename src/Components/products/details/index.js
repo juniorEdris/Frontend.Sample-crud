@@ -43,10 +43,13 @@ const ProductDetails = () => {
         try{
             const response = await axios.post(`http://localhost:5000/api/update-single-product/${productid}`, data);
             const { data: res } = response;
-            if (res) {
+            if (!res?.status) {
+                toast.error(res.message);
+            }else{
                 toast.success(res.message);
             }
         }catch(err){
+            toast.error("Something went wrong!");
             console.error(err);
         }
     }
