@@ -31,7 +31,6 @@ const Signin = () => {
                     Axios.post(`http://localhost:5000/api/login`,{ email, password})
                     .then(response=>{
                         const { data } = response;
-                        console.log({data, tr: data?.data?.email});
                         if(!data.status){
                             setLoading(false);
                             toast.error(data.message);
@@ -41,7 +40,7 @@ const Signin = () => {
                             localStorage.setItem('email', data?.data?.email);
                             getUser('loggedin');
                             navigate('/');
-                            // window.location.reload();
+                            window.location.reload();
                         }
                     })
                     .catch(err=>{
