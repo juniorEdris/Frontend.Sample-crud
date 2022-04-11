@@ -35,12 +35,13 @@ const CreateAccount = () => {
                             Axios.post(`http://localhost:5000/api/register`,{ email, password})
                             .then(response=>{
                                 const { data } = response;
-                                if(!data.data.status){
+                                if(!data?.status){
                                         setLoading(false);
-                                        toast.error(data.data.message);
+                                        toast.error(data.message);
                                     }else{
                                         setLoading(false);
-                                        localStorage.setItem('accessToken', data.data.accessToken);
+                                        localStorage.setItem('accessToken', data?.data.accessToken);
+                                        localStorage.setItem('email', data?.data.email);
                                         getUser('loggedin');
                                         navigate('/');
                                         window.location.reload();
@@ -48,8 +49,9 @@ const CreateAccount = () => {
                                 })
                                 .catch(err=>{
                                     if (err) {
+                                        console.log(err);
                                         setLoading(false);
-                                        toast.error('Invalid credentials');
+                                        toast.error('Something went wrong!');
                                     }
                                 });
                             }else{
@@ -65,12 +67,12 @@ const CreateAccount = () => {
                 } else {
                     // error
                     setLoading(false);
-                    toast.error('Invalid credentials!');
+                    toast.error('Provide credentials including @ and .com!');
                 }
             }else{
                 // error
                 setLoading(false);
-                toast.error('Invalid credentials!');
+                toast.error('Provide credentials including @ and .com!');
             }
         }else{
             //  error

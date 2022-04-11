@@ -22,7 +22,7 @@ const Navbar = () => {
             axios.post(`http://localhost:5000/api/logout`,{ email })
             .then(response=>{
                 const { data } = response;
-                if(!data.status){
+                if(!data?.status){
                     automaticallyLogout();
                 }else{
                     localStorage.removeItem('accessToken');

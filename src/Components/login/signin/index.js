@@ -31,16 +31,17 @@ const Signin = () => {
                     Axios.post(`http://localhost:5000/api/login`,{ email, password})
                     .then(response=>{
                         const { data } = response;
+                        console.log({data, tr: data?.data?.email});
                         if(!data.status){
                             setLoading(false);
                             toast.error(data.message);
                         }else{
                             setLoading(false);
-                            localStorage.setItem('accessToken', data.data.accessToken);
-                            localStorage.setItem('email', data.data.email);
+                            localStorage.setItem('accessToken', data?.data?.accessToken);
+                            localStorage.setItem('email', data?.data?.email);
                             getUser('loggedin');
                             navigate('/');
-                            window.location.reload();
+                            // window.location.reload();
                         }
                     })
                     .catch(err=>{
