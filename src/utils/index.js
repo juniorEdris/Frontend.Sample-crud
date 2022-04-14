@@ -1,4 +1,21 @@
+import Axios from 'axios';
 import { TailSpin } from "react-loader-spinner";
+
+
+export const DOMAIN = `http://localhost:5000/`;
+
+let BaseApi = Axios.create({
+  baseURL: DOMAIN,
+});
+
+export const API = () => {
+  const authToken = localStorage.getItem('accessToken');
+  if (authToken) {
+    BaseApi.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+  }
+  return BaseApi;
+};
+
 
 export const getUser = (state = '') => {
     let user = state;
@@ -17,3 +34,4 @@ export const btnLoading = () => {
         <span className="sr-only">Loading...</span>
     </div>;
 };
+

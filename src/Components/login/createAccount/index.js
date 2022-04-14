@@ -1,8 +1,7 @@
-import Axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { btnLoading, getUser } from "../../../utils";
+import { API, btnLoading, getUser } from "../../../utils";
 
 const CreateAccount = () => {
     const [email, setEmail] = useState('');
@@ -32,7 +31,7 @@ const CreateAccount = () => {
                 if (email.includes('.com')) {
                     if(password.toLocaleLowerCase().length > 6){
                         if (password.toLocaleLowerCase() === confirmPassword.toLocaleLowerCase()) {
-                            Axios.post(`http://localhost:5000/api/register`,{ email, password})
+                            API().post(`api/register`,{ email, password})
                             .then(response=>{
                                 const { data } = response;
                                 if(!data?.status){
@@ -40,8 +39,8 @@ const CreateAccount = () => {
                                         toast.error(data.message);
                                     }else{
                                         setLoading(false);
-                                        localStorage.setItem('accessToken', data?.data.accessToken);
-                                        localStorage.setItem('email', data?.data.email);
+                                        localStorage.setItem('accessToken', data?.accessToken);
+                                        localStorage.setItem('email', data?.email);
                                         getUser('loggedin');
                                         navigate('/');
                                         window.location.reload();

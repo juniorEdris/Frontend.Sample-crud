@@ -1,11 +1,10 @@
-import axios from "axios";
 import { size } from "lodash";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Trash2 } from "react-feather";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LoadingComponent } from "../../../utils";
+import { API, LoadingComponent } from "../../../utils";
 
 const DataTable = ({categories}) => {
     const { data:allcategories =[] } = categories;
@@ -44,7 +43,7 @@ const DataTable = ({categories}) => {
             toast.error('select atleast one product to delete!');
         }else{
             try {
-                const {data} = await axios.delete(`http://localhost:5000/api/delete-multiple-products`, {data: {ids: checkedProducts}});
+                const {data} = await API().delete(`api/delete-multiple-products`, {data: {ids: checkedProducts}});
                 if(data){
                     toast.success(data.message);
                     setLoading(false);
@@ -61,7 +60,7 @@ const DataTable = ({categories}) => {
     const deletesingleItem = async (id) => {
         setLoading(true);
         try {
-            const {data} = await axios.post(`http://localhost:5000/api/delete-single-product/${id}`);
+            const {data} = await API().post(`api/delete-single-product/${id}`);
             if(data){
                 toast.success(data.message);
                 setLoading(false);
@@ -77,7 +76,7 @@ const DataTable = ({categories}) => {
     
     useEffect(() => {
         const fetchData = async () =>{
-            await axios.get(`http://localhost:5000/api/get-all-products`)
+            await API().get(`api/get-all-products`)
             .then(response=>{
                 const { data } = response;
                  const {data: products} = data;

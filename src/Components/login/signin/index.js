@@ -1,8 +1,7 @@
-import Axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { btnLoading, getUser } from "../../../utils";
+import { API, btnLoading, getUser } from "../../../utils";
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -28,7 +27,7 @@ const Signin = () => {
         if (email && password) {
             if(email.includes('@') || email.includes('.com')){
                 if (password.toLocaleLowerCase().length > 6) {
-                    Axios.post(`http://localhost:5000/api/login`,{ email, password})
+                    API().post(`api/login`,{ email, password})
                     .then(response=>{
                         const { data } = response;
                         if(!data.status){
@@ -36,8 +35,8 @@ const Signin = () => {
                             toast.error(data.message);
                         }else{
                             setLoading(false);
-                            localStorage.setItem('accessToken', data?.data?.accessToken);
-                            localStorage.setItem('email', data?.data?.email);
+                            localStorage.setItem('accessToken', data?.accessToken);
+                            localStorage.setItem('email', data?.email);
                             getUser('loggedin');
                             navigate('/');
                             window.location.reload();

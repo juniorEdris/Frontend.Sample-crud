@@ -1,11 +1,11 @@
-import axios from "axios";
 import { useState } from "react";
+import { API } from "../../utils";
 
 const UseMutateData = () => {
     const [response, setResponse] = useState({});
-    const domain = 'http://localhost:5000/';
+
     const mutateData = async (url, data) => {
-        await axios.post(`${domain}${url}`,data)
+        await API().post(`${url}`,data)
         .then(response=>{
             const { data } = response;
             setResponse(data);

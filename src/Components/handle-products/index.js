@@ -63,7 +63,7 @@ const HandleProducts = ({ title, btnText, handleSubmit, categories }) => {
                     <div className="col-md-6">
                         <label htmlFor="productStatus" className="form-label">Status</label>
                         <select id="productStatus" className="form-select" onChange={handleChange} value={productInfo.productStatus}>
-                        <option selected>Choose...</option>
+                        <option selected value=''>Choose...</option>
                         {
                             statusData.map(status=>(
                                 <option key={status.name} value={status.value}>{status.name}</option>

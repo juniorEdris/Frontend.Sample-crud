@@ -24,9 +24,14 @@ const Home = () => {
         if(size(products)){
             setLoading(false);
         }
+        setTimeout(() => {
+            setLoading(false)
+        }, 4000);
     }, [products]);
 
-    const cards = <div className="flex flex-wrap justify-center">
+    const cards = 
+    !size(products) ? <div className="col-12 flex justify-content-center align-items-center text-3xl text-slate-700">No products</div> :
+    <div className="flex flex-wrap justify-center">
         {
             products?.map((product)=>(
                 <div key={product._id} className="card m-2" style={{width: '18rem'}}>

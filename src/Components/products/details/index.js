@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getUser, LoadingComponent } from "../../../utils";
+import { API, getUser, LoadingComponent } from "../../../utils";
 import UseGetData from "../../helper/useGetData";
 import UpdateProducts from "../../update-form";
 
@@ -22,7 +21,7 @@ const ProductDetails = () => {
 
     useEffect(()=>{
         setLoading(true);
-        axios.get(`http://localhost:5000/api/get-single-product/${productid}`)
+        API().get(`api/get-single-product/${productid}`)
         .then(response => {
             const { data } = response?.data;
             if(!data.status){
@@ -41,7 +40,7 @@ const ProductDetails = () => {
 
     const handleSubmit = async (data) => {
         try{
-            const response = await axios.post(`http://localhost:5000/api/update-single-product/${productid}`, data);
+            const response = await API().post(`api/update-single-product/${productid}`, data);
             const { data: res } = response;
             if (!res?.status) {
                 toast.error(res.message);

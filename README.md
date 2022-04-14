@@ -22,6 +22,7 @@
         NODE_ENV = local
         MONGO_URL_DATABASE_NAME = crudapp
         MONGO_TEST_DATABASE_NAME = crudapp_testcase
+        JWT_SECRET = crud_mern_app_splash
 
     > run npm/yarn install for install all the necessary dipendencies
     
