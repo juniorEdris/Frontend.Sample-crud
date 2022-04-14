@@ -7,7 +7,7 @@
 
 # Frontend.Simple-product-crud Test Case
 
-    > As I was new on frontend Test Case, so writing test case was incompoleted.
+    > As I was new on frontend Test Case, so writing test case was incompleted.
 
     > But I can be confident for get proper ideas about Frontend Test case asap. 
 
