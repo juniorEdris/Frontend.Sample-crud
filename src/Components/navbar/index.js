@@ -6,13 +6,13 @@ const Navbar = () => {
     const classes = "text-slate-50 mr-2 text-lg capitalize";
 
     const automaticallyLogout = () => {
-        toast.error('somthing went wrong! Logging out automatically.');
+        toast.error('Somthing went wrong! Logging out automatically.');
         localStorage.removeItem('email');
         localStorage.removeItem('accessToken');
         getUser('');
         setTimeout(() => {
             window.location.reload();
-        }, 2000);
+        }, 1200);
     };
 
     const handleClick = () => {
